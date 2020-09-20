@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-
+WSGI_APPLICATION = 'cmbackend.wsgi.application'
 
 
 # Database
