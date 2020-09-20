@@ -22,7 +22,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path(r'api-token-auth/', obtain_jwt_token),
     path(r'api-token-refresh/', refresh_jwt_token),
-]
+] + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
