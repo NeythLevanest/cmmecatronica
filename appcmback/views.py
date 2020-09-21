@@ -59,6 +59,42 @@ class RegisterViewSet(viewsets.ModelViewSet):
             return Response({'detail': "Thank you for registering. Please verify your email."}, status=201)
         return Response({"detail": "Invalid Request"}, status=400)
 
+class RegisterSuperViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = SuperUsuarioSerializer
+    queryset = TblUsuario.objects.all()
+    filter_fields = ['cedula']
+    search_fields = ['cedula']
+    filter_backends = (SearchFilter, filters.DjangoFilterBackend)
+
+    @action(detail=True, methods=['POST'])
+    def post(self, validated_data):
+        if validated_data.data.is_authenticated():
+            return Response({'detail': 'You are already registered and are authenticated.'}, status=400)
+        data = validated_data.data
+        username = data.get('username')  # username or email address
+        email = data.get('email')
+
+
+        qs = TblUsuario.objects.filter(
+            Q(username=username) |
+            Q(email=email)
+
+        )
+
+        if qs.exists():
+            return Response({"detail": "This user already exists"}, status=401)
+        else:
+            usuario = TblUsuario.objects.create_superuser(
+                email=validated_data['email'],
+                username=validated_data['username'],
+                nombres=validated_data['nombres'],
+                apellidos=validated_data['apellidos'],
+            )
+            usuario.make_password(validated_data['password'])
+            usuario.save()
+            return Response({'detail': "Thank you for registering. Please verify your email."}, status=201)
+        return Response({"detail": "Invalid Request"}, status=400)
 
 class ProyectoViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

@@ -22,6 +22,27 @@ class UsuarioSerializer (serializers.ModelSerializer):
     #def create(self, validated_data):
     #    usuario = TblUsuario.objects.create_user(**validated_data)
 
+class SuperUsuarioSerializer (serializers.ModelSerializer):
+    #owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
+        model = TblUsuario
+        fields = '__all__'
+        #fields = ('cedula', 'nombres', 'apellidos', 'username', 'email', 'telefono', 'usuario_activo')
+
+    def create(self, validated_data):
+        usuario = TblUsuario.objects.create_superuser(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            nombres=validated_data['nombres'],
+            apellidos=validated_data['apellidos'],
+        )
+
+        usuario.set_password(validated_data['password'])
+        usuario.save()
+        return usuario
+    #def create(self, validated_data):
+    #    usuario = TblUsuario.objects.create_user(**validated_data)
+
 class ProyectoSerializer (serializers.ModelSerializer):
     class Meta:
         model = Proyecto

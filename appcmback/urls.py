@@ -10,6 +10,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'usuarios', UsuariosViewSet)
 router.register(r'registrarUsuario', RegisterViewSet)
+router.register(r'registrarSuperUsuario', RegisterSuperViewSet)
 router.register(r'proyectos', ProyectoViewSet)
 router.register(r'eventos', EventosViewSet)
 router.register(r'materiales', MaterialesViewSet)
