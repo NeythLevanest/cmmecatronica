@@ -15,12 +15,11 @@ STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 
 
 class UsuarioManager(BaseUserManager):
-    def create_user(self,email,telefono,username,nombres,apellidos,password=None):
+    def create_user(self,email,username,nombres,apellidos,password=None):
         if not email:
             raise ValueError('El usuario debe tener un correo electrónico')
         usuario = self.model(username = username,
                              email=self.normalize_email(email),
-                             telefono = telefono,
                              nombres= nombres,
                              apellidos = apellidos,
 
@@ -53,6 +52,7 @@ class TblUsuario(AbstractBaseUser):
     roles = [(Presidente, 'Presidente'), (Vicepresidente, 'Vicepresidente'), (Secretario, 'Secretario'), (Tesorero, 'Tesorero'), (Cordinador, 'Cordinador'), (Senior, 'Senior'),(Integrante, 'Integrante')]
     username = models.CharField('Nombre de Usuario', unique=True, max_length=20)
     email = models.EmailField('Email', unique=True, max_length=254)
+    telefono = models.CharField('Telefono', max_length=10, blank=True)
     imgUser = models.ImageField('Imagen de Perfil', upload_to='media/perfil/', blank=True, null=True)
     nombres = models.CharField(max_length=200, blank=True, null=True)
     apellidos = models.CharField(max_length=200, blank=True, null=True)
@@ -60,7 +60,7 @@ class TblUsuario(AbstractBaseUser):
     usuario_administrador = models.BooleanField(default=False)
     rol = models.CharField(max_length=40, choices=roles, default=Integrante)
     activo = models.BooleanField(default=False)
-    scoreActivity = models.IntegerField()
+    scoreActivity = models.IntegerField(default=0)
 
     #rol = models.ForeignKey(TblRol, on_delete=models.PROTECT, blank=True, null=True)
     objects = UsuarioManager()
