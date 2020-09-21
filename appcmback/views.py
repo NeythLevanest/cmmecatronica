@@ -97,13 +97,13 @@ class RegisterSuperViewSet(viewsets.ModelViewSet):
         return Response({"detail": "Invalid Request"}, status=400)
 
 class ProyectoViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     queryset = Proyecto.objects.all()
     serializer_class = ProyectoSerializer
 
 
 class EventosViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     queryset = Eventos.objects.all()
     serializer_class = EventosSerializer
 
