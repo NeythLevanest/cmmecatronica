@@ -35,6 +35,7 @@ class SuperUsuarioSerializer (serializers.ModelSerializer):
             email=validated_data['email'],
             nombres=validated_data['nombres'],
             apellidos=validated_data['apellidos'],
+            password=validated_data['password']
         )
 
         usuario.set_password(validated_data['password'])
